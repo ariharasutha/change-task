@@ -1,0 +1,17 @@
+<?php
+
+require_once "User.php";
+
+$user = new User();
+
+$user->register(
+    $_POST['name'],
+    $_POST['age'],
+    $_POST['mobileno'],
+    $_POST['email'],
+    $_POST['password']
+);
+
+echo "success";
+
+?>
