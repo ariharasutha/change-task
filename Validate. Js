@@ -11,69 +11,65 @@ $(document).ready(function(){
         let password = $("#password").val();
         let confirmPassword = $("#confirm_password").val();
 
-        if(name === "")
-        {
+        if(name === ""){
             $("#show").html("Name is required");
-            return false;
+            return;
         }
 
-        if(!/^[a-zA-Z ]+$/.test(name))
-        {
+        if(!/^[a-zA-Z ]+$/.test(name)){
             $("#show").html("Name should contain only letters");
-            return false;
+            return;
         }
 
-        if(age < 18)
-        {
+        if(age < 18){
             $("#show").html("18 years old or Above");
-            return false;
+            return;
         }
 
-        if(!/^[0-9]{10}$/.test(mobile))
-        {
-            $("#show").html("Please enter valid mobile number");
-            return false;
+        if(!/^[0-9]{10}$/.test(mobile)){
+            $("#show").html("Please enter a valid 10-digit mobile number");
+            return;
         }
 
-        if(!/^[a-zA-Z0-9._%+-]+@gmail\.com$/.test(email))
-        {
-            $("#show").html("Only Gmail allowed");
-            return false;
+        if(!/^[a-zA-Z0-9._%+-]+@gmail\.com$/.test(email)){
+            $("#show").html("Only Gmail addresses are allowed");
+            return;
         }
 
-        if(password.length < 6)
-        {
-            $("#show").html("Password minimum 6 characters");
-            return false;
+        if(password.length < 6){
+            $("#show").html("Password must be at least 6 characters");
+            return;
         }
 
-        if(!/[^A-Za-z0-9]/.test(password))
-        {
-            $("#show").html("Password needs special character");
-            return false;
+        if(!/[^A-Za-z0-9]/.test(password)){
+            $("#show").html("Password must contain at least one special character");
+            return;
         }
 
-        if(password != confirmPassword)
-        {
+        if(password !== confirmPassword){
             $("#show").html("Passwords do not match");
-            return false;
+            return;
         }
 
         $.ajax({
             url:"validate.php",
             type:"POST",
-            data:$(this).serialize(),
-
+            data:{
+                submit:true,
+                name:name,
+                age:age,
+                mobileno:mobile,
+                email:email,
+                password:password,
+                confirm_password:confirmPassword
+            },
             success:function(response){
 
                 response = response.trim();
 
-                if(response == "success")
-                {
-                    window.location.href="login.php";
-                }
-                else
-                {
+                if(response === "success"){
+                    window.location.href = "login.php";
+                }else{
                     $("#show").html(response);
                 }
             }
