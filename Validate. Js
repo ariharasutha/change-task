@@ -1,0 +1,84 @@
+$(document).ready(function(){
+
+    $("#registerForm").submit(function(e){
+
+        e.preventDefault();
+
+        let name = $("#name").val().trim();
+        let age = $("#age").val();
+        let mobile = $("#mobileno").val().trim();
+        let email = $("#email").val().trim();
+        let password = $("#password").val();
+        let confirmPassword = $("#confirm_password").val();
+
+        if(name === "")
+        {
+            $("#show").html("Name is required");
+            return false;
+        }
+
+        if(!/^[a-zA-Z ]+$/.test(name))
+        {
+            $("#show").html("Name should contain only letters");
+            return false;
+        }
+
+        if(age < 18)
+        {
+            $("#show").html("18 years old or Above");
+            return false;
+        }
+
+        if(!/^[0-9]{10}$/.test(mobile))
+        {
+            $("#show").html("Please enter valid mobile number");
+            return false;
+        }
+
+        if(!/^[a-zA-Z0-9._%+-]+@gmail\.com$/.test(email))
+        {
+            $("#show").html("Only Gmail allowed");
+            return false;
+        }
+
+        if(password.length < 6)
+        {
+            $("#show").html("Password minimum 6 characters");
+            return false;
+        }
+
+        if(!/[^A-Za-z0-9]/.test(password))
+        {
+            $("#show").html("Password needs special character");
+            return false;
+        }
+
+        if(password != confirmPassword)
+        {
+            $("#show").html("Passwords do not match");
+            return false;
+        }
+
+        $.ajax({
+            url:"validate.php",
+            type:"POST",
+            data:$(this).serialize(),
+
+            success:function(response){
+
+                response = response.trim();
+
+                if(response == "success")
+                {
+                    window.location.href="login.php";
+                }
+                else
+                {
+                    $("#show").html(response);
+                }
+            }
+        });
+
+    });
+
+});
